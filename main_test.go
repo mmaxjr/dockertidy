@@ -18,3 +18,18 @@ func TestNonEmptyLinesEmptyInput(t *testing.T) {
 		t.Fatalf("got %v, want no rows", got)
 	}
 }
+
+func TestFilterRowsIsCaseInsensitive(t *testing.T) {
+	rows := []string{"abc\t2026-01-01\tWeb-App", "def\t2026-01-02\tworker"}
+	got := filterRows(rows, "web")
+	if !reflect.DeepEqual(got, []string{rows[0]}) {
+		t.Fatalf("got %v, want %v", got, []string{rows[0]})
+	}
+}
+
+func TestFilterRowsWithoutMatchKeepsAll(t *testing.T) {
+	rows := []string{"one", "two"}
+	if got := filterRows(rows, ""); !reflect.DeepEqual(got, rows) {
+		t.Fatalf("got %v, want %v", got, rows)
+	}
+}
